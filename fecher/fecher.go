@@ -6,6 +6,8 @@ import (
 	"fmt"
 )
 
+var Total int
+
 func Get(url string) ([]byte, error) {
 	res, err := http.Get(url)
 	if err != nil {
@@ -16,4 +18,8 @@ func Get(url string) ([]byte, error) {
 		return nil, fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
 	}
 	return ioutil.ReadAll(res.Body)
+}
+
+func GetTotal() {
+	Total = 123;
 }

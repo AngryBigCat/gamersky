@@ -9,7 +9,7 @@ const newsListRe = `<li>.*?<a class=\\"dh\\".*?>(.*?)</a>.*?<a class=\\"tt\\" hr
 func ParseNewsList(content []byte) engine.ParserResult {
 	compile := regexp.MustCompile(newsListRe)
 	submatch := compile.FindAllSubmatch(content, -1)
-	result := new(engine.ParserResult)
+	result := engine.ParserResult{}
 	for _, v := range submatch {
 		result.Items = append(result.Items, v[3])
 		result.Requests = append(result.Requests, engine.Request{
@@ -17,4 +17,5 @@ func ParseNewsList(content []byte) engine.ParserResult {
 			ParserFunc: engine.NilParserFunc,
 		})
 	}
+	return result
 }
