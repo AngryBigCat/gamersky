@@ -1,7 +1,7 @@
 package engine
 
 import (
-	"gamersky/fecher"
+	"gamersky/fetcher"
 	"log"
 )
 
@@ -28,7 +28,7 @@ func (s SimpleEngine) Run(seeds ...Request) {
 }
 
 func worker(r Request) ParserResult {
-	body, err := fecher.Get(r.Url)
+	body, err := fetcher.Get(r.Url)
 	if err != nil {
 		log.Printf("error fetching url %s: %v", r.Url, err)
 	}

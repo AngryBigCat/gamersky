@@ -1,4 +1,4 @@
-package fecher
+package fetcher
 
 import (
 	"net/http"
