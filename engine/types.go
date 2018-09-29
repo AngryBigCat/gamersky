@@ -10,10 +10,6 @@ type ParserResult struct {
 	Items []interface{}
 }
 
-type ParserNewsListTotal struct {
-	total int
-}
-
 func NilParserFunc(content []byte) ParserResult {
 	return ParserResult{}
 }

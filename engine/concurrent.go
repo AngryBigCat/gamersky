@@ -1,6 +1,10 @@
 package engine
 
-import "fmt"
+import (
+	"fmt"
+	"gamersky/fetcher"
+	"log"
+)
 
 type ConcurrentEngine struct {
 	Scheduler Scheduler
@@ -28,15 +32,12 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 		e.Scheduler.Submit(r)
 	}
 
-
 	for {
-		result := <-out
-		for _, item := range result.Items {
-			fmt.Printf("%v\n", item)
-		}
+		parserResult := <-out
 
-		for _, request := range result.Requests {
-			e.Scheduler.Submit(request)
+
+		for _, r := range parserResult.Requests {
+			e.Scheduler.Submit(r)
 		}
 	}
 }
@@ -45,8 +46,22 @@ func createWorker(in chan Request, out chan ParserResult) {
 	go func() {
 		for {
 			request := <- in
-			result := worker(request)
+			result, err := worker(request)
+			if err != nil {
+				continue
+			}
 			out <- result
+
 		}
 	}()
+}
+
+func worker(r Request) (ParserResult, error){
+	body, err := fetcher.Get(r.Url)
+	fmt.Println(r.Url)
+	if err != nil {
+		log.Printf("error fetching url %s: %v", r.Url, err)
+		return ParserResult{}, err
+	}
+	return r.ParserFunc(body), nil
 }

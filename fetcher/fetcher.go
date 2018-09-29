@@ -1,4 +1,4 @@
-package fecher
+package fetcher
 
 import (
 	"net/http"
@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-var Total int
+var current = 1
 
 func Get(url string) ([]byte, error) {
 	res, err := http.Get(url)
@@ -18,8 +18,4 @@ func Get(url string) ([]byte, error) {
 		return nil, fmt.Errorf("status code error: %d %s", res.StatusCode, res.Status)
 	}
 	return ioutil.ReadAll(res.Body)
-}
-
-func GetTotal() {
-	Total = 123;
 }
