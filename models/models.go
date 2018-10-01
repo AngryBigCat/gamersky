@@ -18,7 +18,7 @@ var DB *gorm.DB
 
 func init() {
 	conn, err := gorm.Open(DATATYPE,
-		fmt.Sprintf("%s:%s@tcp(%s:%v)/%s",
+		fmt.Sprintf("%s:%s@tcp(%s:%v)/%s?charset=utf8&parseTime=True&loc=Local",
 			DATAROOT,
 			DATAPASS,
 			DATAHOST,
