@@ -1,4 +1,4 @@
-package news
+package gamersky
 
 import (
 	"regexp"

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gamersky/fetcher"
 	"log"
+	"gamersky/models"
 )
 
 type ConcurrentEngine struct {
@@ -35,9 +36,12 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 	for {
 		parserResult := <-out
 
-
 		for _, r := range parserResult.Requests {
 			e.Scheduler.Submit(r)
+		}
+
+		for _, item := range parserResult.Items {
+			models.DB.Create(&item)
 		}
 	}
 }
