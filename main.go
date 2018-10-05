@@ -2,10 +2,9 @@ package main
 
 import (
 	"gamersky/models"
-	"gamersky/parser/gamersky"
 	"gamersky/engine"
 	"gamersky/scheduler"
-	"fmt"
+	"gamersky/parser/gamersky"
 )
 
 func main() {
@@ -20,23 +19,24 @@ func main() {
 	models.DB.Order("publish_at desc").Find(&newsList)
 
 	var requests []engine.Request
+
 	for _, v := range newsList {
-		requests = append(requests, engine.Request{
-			Url: v.Href,
-			ParserFunc: func(bytes []byte) engine.ParserResult {
-				return gamersky.ParserNews(bytes, v.Id)
-			},
-		})
+		// 这里写成函数的原因是因为，如果不加func外层的话，会导致v.ID永远取最后一位
+		requests = append(requests, func(news models.News) engine.Request {
+			return engine.Request{
+				Url: news.Href,
+				ParserFunc: func(bytes []byte) engine.ParserResult {
+					return gamersky.ParserNews(bytes, news.Id)
+				},
+			}
+		}(v))
 	}
 
 	concurrentEngine := engine.ConcurrentEngine{
 		Scheduler:   &scheduler.SimpleScheduler{},
-		WorkerCount: 10,
+		WorkerCount: 100,
 	}
 
-	fmt.Println(len(requests))
-
 	concurrentEngine.Run(requests...)
-	/*for _,v := range newsList {
-	}*/
 }
+

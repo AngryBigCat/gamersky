@@ -55,6 +55,15 @@ func main() {
 					desc := s.Find(".con .txt").Text()
 					img, _ := s.Find("img").Attr("src")
 					fmt.Println(key, subject, title, href, newsTime, desc, img)
+
+					models.DB.Create(&models.News{
+						Subject: subject,
+						Title: title,
+						Href: href,
+						Description: desc,
+						Image: img,
+						PublishAt: newsTime,
+					})
 				}
 			})
 			hasNext <- next

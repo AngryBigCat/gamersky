@@ -7,7 +7,11 @@ type News struct {
 	Href string
 	Image string
 	Description string
-	Content string
 	PublishAt int64
 }
 
+type Contents struct {
+	Id int
+	NewsId int
+	Content string
+}
