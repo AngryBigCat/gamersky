@@ -1,9 +1,9 @@
 package models
 
 import (
-	_ "github.com/go-sql-driver/mysql"
 	"fmt"
-	"github.com/gpmgo/gopm/modules/log"
+
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 )
 
@@ -31,6 +31,5 @@ func init() {
 
 func checkErr(err error) {
 	if err != nil {
-		log.Error("database error: %s", err)
 	}
 }

@@ -1,15 +1,16 @@
-package main
+package poll
 
 import (
-	"log"
-	"time"
-	"gamersky/models"
-	"gamersky/fetcher"
-	"gamersky/parser/gamersky"
-	"strings"
-	"github.com/PuerkitoBio/goquery"
-	"gamersky/utils"
 	"fmt"
+	"gamersky/fetcher"
+	"gamersky/models"
+	"gamersky/parser/gamersky"
+	"gamersky/utils"
+	"log"
+	"strings"
+	"time"
+
+	"github.com/PuerkitoBio/goquery"
 )
 
 func main() {
@@ -20,7 +21,7 @@ func main() {
 	for i := 0; i < 10; i++ {
 		go func() {
 			for {
-				r := <- request
+				r := <-request
 				c, err := fetcher.Get(r)
 				if err != nil {
 					log.Println(err)
@@ -46,7 +47,7 @@ func main() {
 			next := false
 			doc.Find("li").Each(func(i int, s *goquery.Selection) {
 				newsTime := utils.DatetimeToUnix(s.Find(".con .tem .time").Text())
-				if  next = newsTime > lastTime; next {
+				if next = newsTime > lastTime; next {
 					count++
 					key++
 					subject := s.Find(".dh").Text()
@@ -57,12 +58,12 @@ func main() {
 					fmt.Println(key, subject, title, href, newsTime, desc, img)
 
 					models.DB.Create(&models.News{
-						Subject: subject,
-						Title: title,
-						Href: href,
+						Subject:     subject,
+						Title:       title,
+						Href:        href,
 						Description: desc,
-						Image: img,
-						PublishAt: newsTime,
+						Image:       img,
+						PublishAt:   newsTime,
 					})
 				}
 			})
@@ -73,7 +74,7 @@ func main() {
 	url := `https://db2.gamersky.com/LabelJsonpAjax.aspx?callback=jQuery18303958816852369551_1535642187524&jsondata={"type":"updatenodelabel","nodeId":"11007","page":%d}`
 	for {
 		listPage := 1
-		request <-  fmt.Sprintf(url, listPage)
+		request <- fmt.Sprintf(url, listPage)
 		for {
 			if <-hasNext {
 				listPage++
