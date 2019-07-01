@@ -1,10 +1,10 @@
 package main
 
 import (
-	"gamersky/engine"
-	"gamersky/models"
-	"gamersky/parser/gamersky"
-	"gamersky/scheduler"
+	"github.com/AngryBigCat/gamersky/engine"
+	"github.com/AngryBigCat/gamersky/models"
+	"github.com/AngryBigCat/gamersky/parser/gamersky"
+	"github.com/AngryBigCat/gamersky/scheduler"
 )
 
 func main() {

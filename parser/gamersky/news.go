@@ -1,22 +1,23 @@
 package gamersky
 
 import (
-	"gamersky/engine"
 	"bytes"
+
+	"github.com/AngryBigCat/gamersky/fetcher"
+	"github.com/AngryBigCat/gamersky/models"
+	"github.com/AngryBigCat/gamersky/utils"
+
+	"github.com/AngryBigCat/gamersky/engine"
 	"github.com/PuerkitoBio/goquery"
-	"gamersky/utils"
-	"gamersky/fetcher"
-	"gamersky/models"
 )
 
 func ParserNews(content []byte, id int) engine.ParserResult {
 	models.DB.Create(&models.Contents{
-		NewsId: id,
+		NewsId:  id,
 		Content: ParserNewsContent(content),
 	})
 	return engine.ParserResult{}
 }
-
 
 func ParserNewsContent(content []byte) string {
 	var pages string
@@ -37,13 +38,13 @@ func ParserNewsContent(content []byte) string {
 		if s.Find("#pe100_page_contentpage").Length() == 0 {
 			if src, exists := s.Find("img").Attr("src"); exists {
 				if s.Text() != "" {
-					count +=  "<p><img src='" + src + "'/><br/>"+ s.Text() +"</p>"
+					count += "<p><img src='" + src + "'/><br/>" + s.Text() + "</p>"
 				} else {
-					count +=  "<p><img src='" + src + "'/></p>"
+					count += "<p><img src='" + src + "'/></p>"
 				}
 			} else {
 				if s.Text() != "" {
-					count +=  "<p>" + s.Text() + "</p>"
+					count += "<p>" + s.Text() + "</p>"
 				}
 			}
 		}

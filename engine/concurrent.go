@@ -2,20 +2,21 @@ package engine
 
 import (
 	"fmt"
-	"gamersky/fetcher"
 	"log"
-	"gamersky/models"
+
+	"github.com/AngryBigCat/gamersky/fetcher"
+	"github.com/AngryBigCat/gamersky/models"
 )
 
 type ConcurrentEngine struct {
-	Scheduler Scheduler
+	Scheduler   Scheduler
 	WorkerCount int
 }
 
 type Scheduler interface {
 	Submit(Request)
 	ConfigureMasterWorkerChan(chan Request)
-} 
+}
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
 	// 将in chan放到scheduler里， in在这块不进行操作
@@ -25,7 +26,7 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 	// 输出将在这里操作
 	out := make(chan ParserResult)
 
-	for i := 0; i < e.WorkerCount; i ++ {
+	for i := 0; i < e.WorkerCount; i++ {
 		createWorker(in, out)
 	}
 
@@ -49,7 +50,7 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 func createWorker(in chan Request, out chan ParserResult) {
 	go func() {
 		for {
-			request := <- in
+			request := <-in
 			result, err := worker(request)
 			if err != nil {
 				continue
@@ -60,7 +61,7 @@ func createWorker(in chan Request, out chan ParserResult) {
 	}()
 }
 
-func worker(r Request) (ParserResult, error){
+func worker(r Request) (ParserResult, error) {
 	body, err := fetcher.Get(r.Url)
 	fmt.Println(r.Url)
 	if err != nil {

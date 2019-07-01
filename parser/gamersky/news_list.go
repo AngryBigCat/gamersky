@@ -1,24 +1,26 @@
 package gamersky
 
 import (
-	"fmt"
-	"gamersky/engine"
-	"regexp"
 	"encoding/json"
+	"fmt"
 	"log"
-	"github.com/PuerkitoBio/goquery"
-	"gamersky/utils"
-	"gamersky/models"
+	"regexp"
 	"strings"
+
+	"github.com/AngryBigCat/gamersky/models"
+	"github.com/AngryBigCat/gamersky/utils"
+
+	"github.com/AngryBigCat/gamersky/engine"
+	"github.com/PuerkitoBio/goquery"
 )
 
 type NewsList struct {
-	Status string `json:"status"`
+	Status     string  `json:"status"`
 	TotalPages float64 `json:"totalPages"`
-	Body string `json:"body"`
+	Body       string  `json:"body"`
 }
 
-const listRe  = `^jQuery.*?\((.*)\);$`
+const listRe = `^jQuery.*?\((.*)\);$`
 
 func ParseNewsList(content []byte) engine.ParserResult {
 	newsList := ParserNewsListToType(content)
@@ -40,17 +42,17 @@ func ParseNewsList(content []byte) engine.ParserResult {
 		datetime := utils.DatetimeToUnix(s.Find(".con .tem .time").Text())
 
 		parserResult.Requests = append(parserResult.Requests, engine.Request{
-			Url: href,
+			Url:        href,
 			ParserFunc: engine.NilParserFunc,
 		})
 
 		parserResult.Items = append(parserResult.Items, models.News{
-			Subject: subject,
-			Title: title,
-			Href: href,
-			Image: img,
+			Subject:     subject,
+			Title:       title,
+			Href:        href,
+			Image:       img,
 			Description: desc,
-			PublishAt: datetime,
+			PublishAt:   datetime,
 		})
 
 		fmt.Printf("Review %d: %s - %s - %s - %s - %d - %s \n", i, subject, title, href, desc, datetime, img)

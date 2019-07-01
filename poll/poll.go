@@ -2,13 +2,14 @@ package poll
 
 import (
 	"fmt"
-	"gamersky/fetcher"
-	"gamersky/models"
-	"gamersky/parser/gamersky"
-	"gamersky/utils"
 	"log"
 	"strings"
 	"time"
+
+	"github.com/AngryBigCat/gamersky/fetcher"
+	"github.com/AngryBigCat/gamersky/models"
+	"github.com/AngryBigCat/gamersky/parser/gamersky"
+	"github.com/AngryBigCat/gamersky/utils"
 
 	"github.com/PuerkitoBio/goquery"
 )

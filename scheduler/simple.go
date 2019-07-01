@@ -1,7 +1,7 @@
 package scheduler
 
 import (
-	"gamersky/engine"
+	"github.com/AngryBigCat/gamersky/engine"
 )
 
 type SimpleScheduler struct {
