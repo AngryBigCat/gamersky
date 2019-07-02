@@ -4,7 +4,6 @@ import (
 	"bytes"
 
 	"github.com/AngryBigCat/gamersky/fetcher"
-	"github.com/AngryBigCat/gamersky/utils"
 
 	"github.com/AngryBigCat/gamersky/engine"
 	"github.com/PuerkitoBio/goquery"
@@ -18,8 +17,7 @@ func ParserNewsContent(content []byte) string {
 	var pages string
 
 	reader := bytes.NewReader(content)
-	doc, err := goquery.NewDocumentFromReader(reader)
-	utils.LogFatal(err)
+	doc, _ := goquery.NewDocumentFromReader(reader)
 
 	page := doc.Find(".page_css").Find("a")
 	if page.Last().Text() == "下一页" {

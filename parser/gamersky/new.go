@@ -2,10 +2,11 @@ package gamersky
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"regexp"
 	"strings"
+
+	"github.com/AngryBigCat/gamersky/fetcher"
 
 	"github.com/AngryBigCat/gamersky/models"
 	"github.com/AngryBigCat/gamersky/utils"
@@ -33,7 +34,6 @@ func ParseNewsList(content []byte) engine.ParserResult {
 
 	var parserResult engine.ParserResult
 	doc.Find("li").Each(func(i int, s *goquery.Selection) {
-		// For each item found, get the band and title
 		subject := s.Find(".dh").Text()
 		title := s.Find(".tt").Text()
 		href, _ := s.Find(".tt").Attr("href")
@@ -57,24 +57,12 @@ func ParseNewsList(content []byte) engine.ParserResult {
 
 		parserResult.Items = append(parserResult.Items, &new)
 
-		fmt.Printf("Review %d: %s - %s - %s - %s - %d - %s \n", i, subject, title, href, desc, datetime, img)
+		// fmt.Printf("Review %d: %s - %s - %s - %s - %d - %s \n", i, subject, title, href, desc, datetime, img)
 
 		DB.Create(&new)
-	})
 
-	/* 正则
-	compile := regexp.MustCompile(newsListRe)
-	submatch := compile.FindAllSubmatch(content, -1)
-	parserResult := engine.ParserResult{}
-	for k, v := range submatch {
-		fmt.Printf("%d: %s  %s\n", k, v[3], v[2])
-		parserResult.Items = append(parserResult.Items, v[3])
-		parserResult.Requests = append(parserResult.Requests, engine.Request{
-			Url:        string(v[2]),
-			ParserFunc: engine.NilParserFunc,
-		})
-	}
-	*/
+		createParseDetailWorker(href, new.Id)
+	})
 
 	return parserResult
 }
@@ -89,4 +77,20 @@ func ParserNewsListToType(content []byte) NewsList {
 		log.Println(err)
 	}
 	return newsList
+}
+
+func createParseDetailWorker(href string, id int) {
+	go func(id int) {
+		body, err := fetcher.Get(href)
+		if err == nil {
+			detail := ParserNewsContent(body)
+
+			content := models.Content{
+				NewsId:  id,
+				Content: detail,
+			}
+
+			DB.Create(&content)
+		}
+	}(id)
 }

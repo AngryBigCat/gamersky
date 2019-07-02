@@ -1,7 +1,6 @@
 package models
 
 type Content struct {
-	Model
 	Id      int
 	NewsId  int
 	Content string
