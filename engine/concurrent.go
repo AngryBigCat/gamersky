@@ -5,7 +5,6 @@ import (
 	"log"
 
 	"github.com/AngryBigCat/gamersky/fetcher"
-	"github.com/AngryBigCat/gamersky/models"
 )
 
 type Scheduler interface {
@@ -19,6 +18,7 @@ type ConcurrentEngine struct {
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
+	// db := db.Get()
 	// 将in chan放到scheduler里， in在这块不进行操作
 	in := make(chan Request)
 	e.Scheduler.ConfigureMasterWorkerChan(in)
@@ -40,10 +40,11 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 		for _, r := range parserResult.Requests {
 			e.Scheduler.Submit(r)
 		}
+		/*
+			for _, item := range parserResult.Items {
+			}
+		*/
 
-		for _, item := range parserResult.Items {
-			models.DB.Create(&item)
-		}
 	}
 }
 

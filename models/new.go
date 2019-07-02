@@ -1,6 +1,6 @@
 package models
 
-type News struct {
+type New struct {
 	Id          int
 	Subject     string
 	Title       string
@@ -10,8 +10,6 @@ type News struct {
 	PublishAt   int64
 }
 
-type Contents struct {
-	Id      int
-	NewsId  int
-	Content string
+func (new New) TabeName() string {
+	return "news"
 }

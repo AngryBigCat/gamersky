@@ -1,7 +1,8 @@
-package models
+package db
 
 import (
 	"fmt"
+	"log"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
@@ -16,20 +17,20 @@ const DATAPORT = 3306
 
 var DB *gorm.DB
 
-func init() {
-	conn, err := gorm.Open(DATATYPE,
-		fmt.Sprintf("%s:%s@tcp(%s:%v)/%s?charset=utf8&parseTime=True&loc=Local",
+func Get() *gorm.DB {
+	db, err := gorm.Open(DATATYPE,
+		fmt.Sprintf("%s:%s@tcp(%s:%v)/%s?charset=utf8",
 			DATAROOT,
 			DATAPASS,
 			DATAHOST,
 			DATAPORT,
 			DATANAME,
 		))
-	checkErr(err)
-	DB = conn
-}
 
-func checkErr(err error) {
 	if err != nil {
+		log.Fatalln("数据库连接失败")
 	}
+
+	DB = db
+	return db
 }

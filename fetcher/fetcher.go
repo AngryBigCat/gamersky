@@ -1,9 +1,9 @@
 package fetcher
 
 import (
-	"net/http"
-	"io/ioutil"
 	"fmt"
+	"io/ioutil"
+	"net/http"
 )
 
 var current = 1

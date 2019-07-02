@@ -46,16 +46,20 @@ func ParseNewsList(content []byte) engine.ParserResult {
 			ParserFunc: engine.NilParserFunc,
 		})
 
-		parserResult.Items = append(parserResult.Items, models.News{
+		new := models.New{
 			Subject:     subject,
 			Title:       title,
 			Href:        href,
 			Image:       img,
 			Description: desc,
 			PublishAt:   datetime,
-		})
+		}
+
+		parserResult.Items = append(parserResult.Items, &new)
 
 		fmt.Printf("Review %d: %s - %s - %s - %s - %d - %s \n", i, subject, title, href, desc, datetime, img)
+
+		DB.Create(&new)
 	})
 
 	/* 正则

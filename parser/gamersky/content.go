@@ -4,7 +4,6 @@ import (
 	"bytes"
 
 	"github.com/AngryBigCat/gamersky/fetcher"
-	"github.com/AngryBigCat/gamersky/models"
 	"github.com/AngryBigCat/gamersky/utils"
 
 	"github.com/AngryBigCat/gamersky/engine"
@@ -12,10 +11,6 @@ import (
 )
 
 func ParserNews(content []byte, id int) engine.ParserResult {
-	models.DB.Create(&models.Contents{
-		NewsId:  id,
-		Content: ParserNewsContent(content),
-	})
 	return engine.ParserResult{}
 }
 
