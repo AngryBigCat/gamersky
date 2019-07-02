@@ -8,10 +8,10 @@ import (
 )
 
 const DATATYPE = "mysql"
-const DATAHOST = "localhost"
+const DATAHOST = "111.230.26.237"
 const DATANAME = "gamersky"
 const DATAROOT = "root"
-const DATAPASS = "123456"
+const DATAPASS = "g8LSfVZ53chK4cTY"
 const DATAPORT = 3306
 
 var DB *gorm.DB

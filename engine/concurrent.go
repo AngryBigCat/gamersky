@@ -8,14 +8,14 @@ import (
 	"github.com/AngryBigCat/gamersky/models"
 )
 
-type ConcurrentEngine struct {
-	Scheduler   Scheduler
-	WorkerCount int
-}
-
 type Scheduler interface {
 	Submit(Request)
 	ConfigureMasterWorkerChan(chan Request)
+}
+
+type ConcurrentEngine struct {
+	Scheduler   Scheduler
+	WorkerCount int
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
