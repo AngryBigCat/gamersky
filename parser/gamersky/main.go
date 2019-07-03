@@ -5,20 +5,10 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/AngryBigCat/gamersky/models/db"
-
-	"github.com/jinzhu/gorm"
-
 	"github.com/AngryBigCat/gamersky/engine"
 )
 
 const newsListTotalRe = `.*?"totalPages":(\d+),.*`
-
-var DB *gorm.DB
-
-func init() {
-	DB = db.Get()
-}
 
 func ParserMain(content []byte) engine.ParserResult {
 	compile := regexp.MustCompile(newsListTotalRe)

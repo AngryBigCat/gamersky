@@ -1,7 +1,6 @@
 package engine
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/AngryBigCat/gamersky/fetcher"
@@ -64,7 +63,6 @@ func createWorker(in chan Request, out chan ParserResult) {
 
 func worker(r Request) (ParserResult, error) {
 	body, err := fetcher.Get(r.Url)
-	fmt.Println(r.Url)
 	if err != nil {
 		log.Printf("error fetching url %s: %v", r.Url, err)
 		return ParserResult{}, err

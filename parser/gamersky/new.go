@@ -2,9 +2,12 @@ package gamersky
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"regexp"
 	"strings"
+
+	"github.com/AngryBigCat/gamersky/models/db"
 
 	"github.com/AngryBigCat/gamersky/fetcher"
 
@@ -57,9 +60,21 @@ func ParseNewsList(content []byte) engine.ParserResult {
 
 		parserResult.Items = append(parserResult.Items, &new)
 
-		// fmt.Printf("Review %d: %s - %s - %s - %s - %d - %s \n", i, subject, title, href, desc, datetime, img)
+		fmt.Printf("Review %d: %s - %s - %s - %s - %d - %s \n", i, subject, title, href, desc, datetime, img)
 
-		DB.Create(&new)
+		// DB.Create(&new)
+
+		/*
+			p, err := db.Pool.Get()
+			if err != nil {
+				fmt.Println("pools error")
+			}
+
+			p.(*gorm.DB).Create(&new)
+			db.Pool.Put(p)
+		*/
+
+		db.Instance.Create(&new)
 
 		createParseDetailWorker(href, new.Id)
 	})
@@ -80,17 +95,24 @@ func ParserNewsListToType(content []byte) NewsList {
 }
 
 func createParseDetailWorker(href string, id int) {
-	go func(id int) {
-		body, err := fetcher.Get(href)
-		if err == nil {
-			detail := ParserNewsContent(body)
+	body, err := fetcher.Get(href)
+	if err == nil {
+		detail := ParserNewsContent(body)
 
-			content := models.Content{
-				NewsId:  id,
-				Content: detail,
+		content := models.Content{
+			NewsId:  id,
+			Content: detail,
+		}
+		/*
+			p, err := db.Pool.Get()
+			if err != nil {
+				fmt.Println("pools error")
 			}
 
-			DB.Create(&content)
-		}
-	}(id)
+			p.(*gorm.DB).Create(&content)
+			db.Pool.Put(p)
+		*/
+
+		db.Instance.Create(&content)
+	}
 }

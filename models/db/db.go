@@ -15,9 +15,9 @@ const DATAROOT = "root"
 const DATAPASS = "g8LSfVZ53chK4cTY"
 const DATAPORT = 3306
 
-var DB *gorm.DB
+var Instance *gorm.DB
 
-func Get() *gorm.DB {
+func init() {
 	db, err := gorm.Open(DATATYPE,
 		fmt.Sprintf("%s:%s@tcp(%s:%v)/%s?charset=utf8",
 			DATAROOT,
@@ -31,6 +31,7 @@ func Get() *gorm.DB {
 		log.Fatalln("数据库连接失败")
 	}
 
-	DB = db
-	return db
+	// InitPool()
+
+	Instance = db
 }
