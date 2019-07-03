@@ -19,7 +19,7 @@ var Instance *gorm.DB
 
 func init() {
 	db, err := gorm.Open(DATATYPE,
-		fmt.Sprintf("%s:%s@tcp(%s:%v)/%s?charset=utf8",
+		fmt.Sprintf("%s:%s@tcp(%s:%v)/%s?charset=utf8mb4",
 			DATAROOT,
 			DATAPASS,
 			DATAHOST,
