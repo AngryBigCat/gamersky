@@ -6,10 +6,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/AngryBigCat/gamersky/models/db"
-
-	"github.com/AngryBigCat/gamersky/fetcher"
-
 	"github.com/AngryBigCat/gamersky/models"
 	"github.com/AngryBigCat/gamersky/utils"
 
@@ -94,7 +90,7 @@ func ParserNewsListToType(content []byte) NewsList {
 }
 
 func createParseDetailWorker(href string, id int) {
-	body, err := fetcher.Get(href)
+	/* body, err := fetcher.Get(href)
 	if err == nil {
 		detail := ParserNewsContent(body)
 
@@ -102,16 +98,13 @@ func createParseDetailWorker(href string, id int) {
 			NewsId:  id,
 			Content: detail,
 		}
-		/*
-			p, err := db.Pool.Get()
-			if err != nil {
-				fmt.Println("pools error")
-			}
+		p, err := db.Pool.Get()
+		if err != nil {
+			fmt.Println("pools error")
+		}
 
-			p.(*gorm.DB).Create(&content)
-			db.Pool.Put(p)
-		*/
-
+		p.(*gorm.DB).Create(&content)
+		db.Pool.Put(p)
 		db.Instance.Create(&content)
-	}
+	} */
 }

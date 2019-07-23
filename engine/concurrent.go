@@ -10,6 +10,7 @@ import (
 type Scheduler interface {
 	Submit(Request)
 	ConfigureMasterWorkerChan(chan Request)
+	Run()
 }
 
 type ConcurrentEngine struct {
@@ -18,11 +19,13 @@ type ConcurrentEngine struct {
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
-	// 将in chan放到scheduler里， in在这块不进行操作
+	// 输入channel
 	in := make(chan Request)
-	e.Scheduler.ConfigureMasterWorkerChan(in)
 
-	// 输出将在这里操作
+	// e.Scheduler.Run()
+	// 将输入channel配置进Scheduler
+	// e.Scheduler.ConfigureMasterWorkerChan(in)
+	// 输出channel
 	out := make(chan ParserResult)
 
 	for i := 0; i < e.WorkerCount; i++ {
@@ -33,15 +36,17 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 		e.Scheduler.Submit(r)
 	}
 
+	itemCount := 1
 	for {
 		parserResult := <-out
 
-		for _, r := range parserResult.Requests {
-			e.Scheduler.Submit(r)
+		for _, item := range parserResult.Items {
+			fmt.Printf("Go item #%d: %v \n", itemCount, item)
+			itemCount++
 		}
 
-		for _, item := range parserResult.Items {
-			fmt.Println(item)
+		for _, r := range parserResult.Requests {
+			e.Scheduler.Submit(r)
 		}
 	}
 }
@@ -55,7 +60,6 @@ func createWorker(in chan Request, out chan ParserResult) {
 				continue
 			}
 			out <- result
-
 		}
 	}()
 }
