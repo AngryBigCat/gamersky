@@ -2,7 +2,6 @@ package gamersky
 
 import (
 	"encoding/json"
-	"fmt"
 	"log"
 	"regexp"
 	"strings"
@@ -60,7 +59,7 @@ func ParseNewsList(content []byte) engine.ParserResult {
 
 		parserResult.Items = append(parserResult.Items, &new)
 
-		fmt.Printf("Review %d: %s - %s - %s - %s - %d - %s \n", i, subject, title, href, desc, datetime, img)
+		// log.Printf("Review %d: %s - %s - %s - %s - %d - %s \n", i, subject, title, href, desc, datetime, img)
 
 		// DB.Create(&new)
 
@@ -74,9 +73,9 @@ func ParseNewsList(content []byte) engine.ParserResult {
 			db.Pool.Put(p)
 		*/
 
-		db.Instance.Create(&new)
+		// db.Instance.Create(&new)
 
-		createParseDetailWorker(href, new.Id)
+		// createParseDetailWorker(href, new.Id)
 	})
 
 	return parserResult

@@ -35,3 +35,5 @@ func init() {
 
 	Instance = db
 }
+
+type 

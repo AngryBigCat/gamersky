@@ -1,6 +1,7 @@
 package engine
 
 import (
+	"fmt"
 	"log"
 
 	"github.com/AngryBigCat/gamersky/fetcher"
@@ -17,7 +18,6 @@ type ConcurrentEngine struct {
 }
 
 func (e *ConcurrentEngine) Run(seeds ...Request) {
-	// db := db.Get()
 	// 将in chan放到scheduler里， in在这块不进行操作
 	in := make(chan Request)
 	e.Scheduler.ConfigureMasterWorkerChan(in)
@@ -39,11 +39,10 @@ func (e *ConcurrentEngine) Run(seeds ...Request) {
 		for _, r := range parserResult.Requests {
 			e.Scheduler.Submit(r)
 		}
-		/*
-			for _, item := range parserResult.Items {
-			}
-		*/
 
+		for _, item := range parserResult.Items {
+			fmt.Println(item)
+		}
 	}
 }
 

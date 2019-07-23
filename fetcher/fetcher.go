@@ -6,8 +6,6 @@ import (
 	"net/http"
 )
 
-var current = 1
-
 func Get(url string) ([]byte, error) {
 	res, err := http.Get(url)
 	if err != nil {
